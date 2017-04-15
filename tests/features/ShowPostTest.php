@@ -7,29 +7,24 @@ class ShowPostTest extends FeatureTestCase
         $user = $this->defaultUser([
             'name' => 'Erick Cruz'
         ]);
-        $post = factory(\App\Post::class)->make([
+        $post = $this->createPost([
             'title' => 'Este es el título del post',
-            'content' => 'Este es el contenido del post'
+            'content' => 'Este es el contenido del post',
+            'user_id' => $user->id,
         ]);
-
-
-        $user->posts()->save($post);
 
         //when
         $this->visit($post->url)
              ->seeInElement('h1',$post->title)
              ->see($post->content)
-             ->see($user->name);
+             ->see('Erick Cruz');
     }
 
     function tests_old_urls_are_redirected()
     {
-        $user = $this->defaultUser();
-        $post = factory(\App\Post::class)->make([
+        $post = $this->createPost([
             'title' => 'Old Test ',
         ]);
-
-        $user->posts()->save($post);
 
         $url = $post->url;
 
