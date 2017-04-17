@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    protected $fillable = ['comment', 'post_id','answer'];
+    protected $fillable = ['comment', 'post_id'];
 
     public function post()
     {
@@ -15,7 +15,7 @@ class Comment extends Model
 
     public function markAsAnswer()
     {
-        $this->pending = false;
+        $this->post->pending = false;
         $this->post->answer_id = $this->id;
 
         $this->post->save();
@@ -23,6 +23,6 @@ class Comment extends Model
 
     public function getAnswerAttribute()
     {
-        return $this->id == $this->post->answer_id;
+        return $this->id === $this->post->answer_id;
     }
 }
