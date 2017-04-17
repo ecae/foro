@@ -6,11 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    protected $table="comments";
-    protected $fillable = ['comment', 'post_id'];
+    protected $fillable = ['comment', 'post_id','answer'];
+
+    protected $casts = [
+        'answer' => 'boolean'
+    ];
 
     public function post()
     {
         return $this->belongsTo(Post::class);
+    }
+
+    public function markAsAnswer()
+    {
+        $this->post->comments()->where('answer',true)->update(['answer'=>false]);
+
+        $this->answer = true;
+
+        $this->save();
+
+        $this->pending = false;
+
+        $this->post->save();
     }
 }

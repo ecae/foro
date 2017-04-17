@@ -12,7 +12,11 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+use App\Comment;
+use App\Post;
+use App\User;
+
+$factory->define(User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
@@ -23,13 +27,25 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(\App\Post::class,function (Faker\Generator $faker){
+$factory->define(Post::class,function (Faker\Generator $faker){
    return [
        'title' => $faker->sentence,
        'content' => $faker->paragraph,
        'pending' => $faker->boolean(),
        'user_id' => function(){
-           return factory(\App\User::class)->create()->id;
+           return factory(User::class)->create()->id;
        },
    ];
+});
+
+$factory->define(Comment::class,function (Faker\Generator $faker){
+    return [
+        'comment' => $faker->paragraph,
+        'post_id' => function(){
+            return factory(Post::class)->create()->id;
+        },
+        'user_id' => function(){
+            return factory(User::class)->create()->id;
+        },
+    ];
 });

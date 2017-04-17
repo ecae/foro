@@ -137,6 +137,7 @@ return [
         'minute'                => 'minuto',
         'second'                => 'segundo',
         'title'                 => 'título',
+        'comment'               =>'comentario',
         'content'               => 'contenido',
         'body'                  => 'contenido',
         'description'           => 'descripción',

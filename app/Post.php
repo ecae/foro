@@ -7,8 +7,12 @@ use Illuminate\Support\Str;
 
 class Post extends Model
 {
-    protected $table="posts";
+
     protected $fillable=['title','content','pending'];
+
+    protected $casts = [
+        'pending' => 'boolean'
+    ];
 
     public function user()
     {
