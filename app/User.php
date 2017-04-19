@@ -2,9 +2,11 @@
 
 namespace App;
 
+use App\Notifications\PostCommented;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Notification;
 
 class User extends Authenticatable
 {
@@ -45,6 +47,15 @@ class User extends Authenticatable
             'post_id' => $post->id,
         ]);
         $this->comments()->save($comment);
+
+        //Notificacion cuando se escribe un comentario
+        Notification::send(
+            $post->subscribers()->where('users.id', '!=', $this->id)->get(),
+            new PostCommented($this, $comment)
+        );
+
+        return $comment;
+
     }
 
     public function createPost(array $data)
