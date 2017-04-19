@@ -1,4 +1,6 @@
 <?php
+use App\Post;
+
 /**
  * Created by PhpStorm.
  * User: ANGGELA
@@ -29,8 +31,16 @@ class CreatePostsTest extends  FeatureTestCase
             'user_id' => $user->id,
             'slug' => 'esta-es-una-pregunta',
         ]);
+
+        $post = Post::first();
+        //El autor del post es suscrito automáticanmente
+        $this->seeInDatabase('subscriptions',[
+            'user_id' => $user->id,
+            'post_id' => $post->id,
+        ]);
+
         //El usuario es redirigidos al detalle del posts
-        $this->see($title);
+        $this->seePageIs($post->url);
     }
 
     public function test_creating_a_posts_authentication()
