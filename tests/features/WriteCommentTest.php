@@ -1,10 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Notification;
+
 class WriteCommentTest extends FeatureTestCase
 {
 
     function test_a_user_can_write_a_comment()
     {
+        Notification::fake();
+
         //Having
         $post= $this->createPost();
 
